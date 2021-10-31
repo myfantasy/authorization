@@ -67,12 +67,17 @@ func (p *Permission) DenyRaw(co *az.CheckedObject) bool {
 }
 
 type User struct {
-	Name    string                                                `json:"name"`
-	IsAdmin bool                                                  `json:"is_admin,omitempty"`
-	Rules   map[az.ObjectType]map[az.Action]map[string]Permission `json:"rule"`
+	Name       string                                                `json:"name"`
+	IsAdmin    bool                                                  `json:"is_admin,omitempty"`
+	IsDisabled bool                                                  `json:"is_disabled"`
+	Rules      map[az.ObjectType]map[az.Action]map[string]Permission `json:"rule"`
 }
 
 func (u *User) Allow(objectType az.ObjectType, action az.Action, objectName string) bool {
+	if u.IsDisabled {
+		return false
+	}
+
 	if u.IsAdmin {
 		return true
 	}
@@ -104,6 +109,10 @@ func (u *User) Allow(objectType az.ObjectType, action az.Action, objectName stri
 }
 
 func (u *User) AllowWide(co *az.CheckedObject) bool {
+	if u.IsDisabled {
+		return false
+	}
+
 	if u.IsAdmin {
 		return true
 	}
@@ -135,6 +144,10 @@ func (u *User) AllowWide(co *az.CheckedObject) bool {
 }
 
 func (u *User) AllowRow(objectType az.ObjectType, action az.Action, objectName string) Permission {
+	if u.IsDisabled {
+		return Permission{Allow: false}
+	}
+
 	if u.IsAdmin {
 		return Permission{Allow: true}
 	}
@@ -214,7 +227,7 @@ var _ ajt.Api = &SimplePermissionChecker{}
 type SimplePermissionChecker struct {
 	storage.SaveObjectProto
 
-	Users map[string]User `json:"name,omitempty"`
+	Users map[string]User `json:"users,omitempty"`
 }
 
 func (spc *SimplePermissionChecker) ToBytes() (data []byte, err *mft.Error) {

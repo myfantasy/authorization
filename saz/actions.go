@@ -8,8 +8,9 @@ import (
 )
 
 type AddUserRequest struct {
-	Name    string
-	IsAdmin bool
+	Name       string `json:"name"`
+	IsAdmin    bool   `json:"is_admin"`
+	IsDisabled bool   `json:"is_disabled"`
 }
 
 func (spc *SimplePermissionChecker) AddUser(ctx context.Context, user az.User, req *AddUserRequest,
@@ -47,8 +48,9 @@ func (spc *SimplePermissionChecker) AddUser(ctx context.Context, user az.User, r
 	}
 
 	u := User{
-		Name:    req.Name,
-		IsAdmin: req.IsAdmin,
+		Name:       req.Name,
+		IsAdmin:    req.IsAdmin,
+		IsDisabled: req.IsDisabled,
 	}
 	spc.Users[req.Name] = u
 
@@ -90,6 +92,7 @@ func (spc *SimplePermissionChecker) UpdateUser(ctx context.Context, user az.User
 	}
 
 	u.IsAdmin = req.IsAdmin
+	u.IsDisabled = req.IsDisabled
 	spc.Users[req.Name] = u
 
 	return nil

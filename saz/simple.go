@@ -67,13 +67,13 @@ func (p *Permission) DenyRaw(co *az.CheckedObject) bool {
 }
 
 type User struct {
-	Name       string                                                `json:"name"`
-	IsAdmin    bool                                                  `json:"is_admin,omitempty"`
-	IsDisabled bool                                                  `json:"is_disabled"`
-	Rules      map[az.ObjectType]map[az.Action]map[string]Permission `json:"rule"`
+	Name       string                                                  `json:"name"`
+	IsAdmin    bool                                                    `json:"is_admin,omitempty"`
+	IsDisabled bool                                                    `json:"is_disabled"`
+	Rules      map[ajt.ObjectType]map[ajt.Action]map[string]Permission `json:"rule"`
 }
 
-func (u *User) Allow(objectType az.ObjectType, action az.Action, objectName string) bool {
+func (u *User) Allow(objectType ajt.ObjectType, action ajt.Action, objectName string) bool {
 	if u.IsDisabled {
 		return false
 	}
@@ -143,7 +143,7 @@ func (u *User) AllowWide(co *az.CheckedObject) bool {
 		d7.DenyRaw(co))
 }
 
-func (u *User) AllowRow(objectType az.ObjectType, action az.Action, objectName string) Permission {
+func (u *User) AllowRow(objectType ajt.ObjectType, action ajt.Action, objectName string) Permission {
 	if u.IsDisabled {
 		return Permission{Allow: false}
 	}
@@ -174,15 +174,15 @@ func (u *User) AllowRow(objectType az.ObjectType, action az.Action, objectName s
 	return v
 }
 
-func (u *User) Set(objectType az.ObjectType, action az.Action, objectName string, value Permission) {
+func (u *User) Set(objectType ajt.ObjectType, action ajt.Action, objectName string, value Permission) {
 
 	if u.Rules == nil {
-		u.Rules = make(map[az.ObjectType]map[az.Action]map[string]Permission)
+		u.Rules = make(map[ajt.ObjectType]map[ajt.Action]map[string]Permission)
 	}
 
 	a, ok := u.Rules[objectType]
 	if !ok {
-		a = make(map[az.Action]map[string]Permission)
+		a = make(map[ajt.Action]map[string]Permission)
 		u.Rules[objectType] = a
 	}
 
@@ -195,7 +195,7 @@ func (u *User) Set(objectType az.ObjectType, action az.Action, objectName string
 	o[objectName] = value
 }
 
-func (u *User) Drop(objectType az.ObjectType, action az.Action, objectName string) {
+func (u *User) Drop(objectType ajt.ObjectType, action ajt.Action, objectName string) {
 	if u.Rules == nil {
 		return
 	}
@@ -246,7 +246,7 @@ func (spc *SimplePermissionChecker) FromBytes(data []byte) (err *mft.Error) {
 }
 
 func (spc *SimplePermissionChecker) CheckPermission(ctx context.Context, user az.User,
-	objectType az.ObjectType, action az.Action, objectName string,
+	objectType ajt.ObjectType, action ajt.Action, objectName string,
 ) (allowed bool, err *mft.Error) {
 	if spc == nil {
 		return true, nil

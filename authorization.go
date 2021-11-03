@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/myfantasy/mft"
+
+	ajt "github.com/myfantasy/api_json_types"
 )
 
 // User - user for authentification
@@ -17,23 +19,20 @@ func (un UserName) UserName() string {
 	return string(un)
 }
 
-type ObjectType string
-type Action string
-
 const (
-	AllObjectTypes ObjectType = "*"
-	AllActions     Action     = "*"
-	AllObjectNames ObjectType = "*"
+	AllObjectTypes ajt.ObjectType = "*"
+	AllActions     ajt.Action     = "*"
+	AllObjectNames string         = "*"
 )
 
 type CheckPermission func(ctx context.Context, user User,
-	objectType ObjectType, action Action, objectName string,
+	objectType ajt.ObjectType, action ajt.Action, objectName string,
 ) (allowed bool, err *mft.Error)
 
 type CheckedObject struct {
 	User          User                   `json:"user,omitempty"`
-	ObjectType    ObjectType             `json:"object_type,omitempty"`
-	Action        Action                 `json:"action,omitempty"`
+	ObjectType    ajt.ObjectType         `json:"object_type,omitempty"`
+	Action        ajt.Action             `json:"action,omitempty"`
 	ObjectName    string                 `json:"object_name,omitempty"`
 	ItemIDsInt    []int64                `json:"item_ids_int,omitempty"`
 	ItemIDsString []string               `json:"item_ids_string,omitempty"`
@@ -43,7 +42,7 @@ type CheckPermissionWide func(ctx context.Context, co *CheckedObject) (allowed b
 
 type PermissionChecker interface {
 	CheckPermission(ctx context.Context, user User,
-		objectType ObjectType, action Action, objectName string,
+		objectType ajt.ObjectType, action ajt.Action, objectName string,
 	) (allowed bool, err *mft.Error)
 	CheckPermissionWide(ctx context.Context, co *CheckedObject) (allowed bool, err *mft.Error)
 }

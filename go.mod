@@ -12,4 +12,4 @@ require (
 	github.com/myfantasy/mfs v0.2.0 // indirect
 )
 
-require github.com/myfantasy/api_json_types v0.0.2
+require github.com/myfantasy/api_json_types v0.0.3

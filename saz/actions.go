@@ -3,6 +3,7 @@ package saz
 import (
 	"context"
 
+	ajt "github.com/myfantasy/api_json_types"
 	az "github.com/myfantasy/authorization"
 	"github.com/myfantasy/mft"
 )
@@ -197,8 +198,8 @@ func (spc *SimplePermissionChecker) RenameUser(ctx context.Context, user az.User
 
 type SetPermissionRequest struct {
 	Name       string
-	ObjectType az.ObjectType
-	Action     az.Action
+	ObjectType ajt.ObjectType
+	Action     ajt.Action
 	ObjectName string
 	Value      Permission
 }
@@ -245,8 +246,8 @@ func (spc *SimplePermissionChecker) SetPermission(ctx context.Context, user az.U
 
 type DropPermissionRequest struct {
 	Name       string
-	ObjectType az.ObjectType
-	Action     az.Action
+	ObjectType ajt.ObjectType
+	Action     ajt.Action
 	ObjectName string
 }
 

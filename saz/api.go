@@ -18,7 +18,7 @@ func (spc *SimplePermissionChecker) AllowedCommands() []ajt.CommandDescription {
 }
 func (spc *SimplePermissionChecker) DoRequest(ctx context.Context, req *ajt.CommandRequest) *ajt.CommandResponce {
 
-	if req.CommandName == string(AddUserAction) {
+	if req.Action == AddUserAction {
 		var aReq *AddUserRequest
 
 		err := req.Unmarshal(&aReq)
@@ -35,7 +35,7 @@ func (spc *SimplePermissionChecker) DoRequest(ctx context.Context, req *ajt.Comm
 		}
 	}
 	return &ajt.CommandResponce{
-		Error: mft.GenerateError(20200300, req.ObjectName, req.CommandName),
+		Error: mft.GenerateError(20200300, req.ObjectName, req.Action),
 	}
 }
 
@@ -45,7 +45,7 @@ func AddUser(ctx context.Context, api ajt.Api, req *AddUserRequest,
 		return mft.GenerateError(20200200)
 	}
 
-	reqA, err := ajt.CreateRequest(string(ObjectTypeName), string(AddUserAction), req)
+	reqA, err := ajt.CreateRequest(ObjectTypeName, AddUserAction, req.Name, req)
 	if err != nil {
 		return mft.GenerateError(20200201, err)
 	}

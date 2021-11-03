@@ -10,8 +10,8 @@ import (
 func (spc *SimplePermissionChecker) AllowedCommands() []ajt.CommandDescription {
 	return []ajt.CommandDescription{
 		{
-			ObjectName:  string(ObjectTypeName),
-			Name:        string(AddUserAction),
+			ObjectType:  ObjectTypeName,
+			Action:      AddUserAction,
 			Description: "creates new user (saz.AddUserRequest -> AddUserResponce)",
 		},
 	}

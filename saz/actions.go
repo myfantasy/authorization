@@ -318,7 +318,7 @@ func (spc *SimplePermissionChecker) GetUserInfo(ctx context.Context, user az.Use
 		return nil, mft.GenerateError(20200165)
 	}
 
-	if spc.DataRLock(ctx) {
+	if !spc.DataRLock(ctx) {
 		return nil, mft.GenerateError(20200162)
 	}
 	defer spc.DataRUnlock()
@@ -364,7 +364,7 @@ func (spc *SimplePermissionChecker) GetUsersInfo(ctx context.Context, user az.Us
 		return nil, mft.GenerateError(20200175)
 	}
 
-	if spc.DataRLock(ctx) {
+	if !spc.DataRLock(ctx) {
 		return nil, mft.GenerateError(20200172)
 	}
 	defer spc.DataRUnlock()

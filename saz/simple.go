@@ -251,7 +251,7 @@ func (spc *SimplePermissionChecker) CheckPermission(ctx context.Context, user az
 	if spc == nil {
 		return true, nil
 	}
-	if spc.DataRLock(ctx) {
+	if !spc.DataRLock(ctx) {
 		return false, mft.GenerateError(20200000)
 	}
 	defer spc.DataRUnlock()
@@ -272,7 +272,7 @@ func (spc *SimplePermissionChecker) CheckPermissionWide(ctx context.Context, co 
 	if spc == nil {
 		return true, nil
 	}
-	if spc.DataRLock(ctx) {
+	if !spc.DataRLock(ctx) {
 		return false, mft.GenerateError(20200010)
 	}
 	defer spc.DataRUnlock()

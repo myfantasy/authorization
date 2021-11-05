@@ -7,6 +7,11 @@ var Errors map[int]string = map[int]string{
 	20200000: "authorization.saz.SimplePermissionChecker.CheckPermission: DataRLock fail",
 	20200010: "authorization.saz.SimplePermissionChecker.CheckPermissionWide: DataRLock fail",
 
+	20200050: "authorization.saz.SimplePermissionChecker.ToBytes: fail to marshal",
+	20200060: "authorization.saz.SimplePermissionChecker.FromBytes: fail to unmarshal",
+	20200070: "authorization.saz.SimplePermissionChecker.Save: fail to save",
+	20200080: "authorization.saz.SimplePermissionChecker.Load: fail to load",
+
 	20200100: "authorization.saz.SimplePermissionChecker.AddUser: object is nil",
 	20200101: "authorization.saz.SimplePermissionChecker.AddUser: request is nil",
 	20200102: "authorization.saz.SimplePermissionChecker.AddUser: DataLock fail",

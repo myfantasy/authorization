@@ -225,7 +225,7 @@ var _ storage.Storable = &SimplePermissionChecker{}
 var _ ajt.Api = &SimplePermissionChecker{}
 
 type SimplePermissionChecker struct {
-	storage.SaveObjectProto
+	storage.SaveProto
 
 	Users map[string]User `json:"users,omitempty"`
 }
@@ -233,15 +233,31 @@ type SimplePermissionChecker struct {
 func (spc *SimplePermissionChecker) ToBytes() (data []byte, err *mft.Error) {
 	b, er0 := json.Marshal(spc)
 	if er0 != nil {
-		return nil, mft.GenerateErrorE(10510000, er0)
+		return nil, mft.GenerateErrorE(20200050, er0)
 	}
 	return b, nil
 }
 func (spc *SimplePermissionChecker) FromBytes(data []byte) (err *mft.Error) {
 	er0 := json.Unmarshal(data, &spc)
 	if er0 != nil {
-		return mft.GenerateErrorE(10510000, er0)
+		return mft.GenerateErrorE(20200060, er0)
 	}
+	return nil
+}
+func (spc *SimplePermissionChecker) Save() (err *mft.Error) {
+	err = storage.SaveObject(spc)
+	if err != nil {
+		return mft.GenerateErrorE(20200070, err)
+	}
+
+	return nil
+}
+func (spc *SimplePermissionChecker) Load() (err *mft.Error) {
+	err = storage.LoadObject(spc)
+	if err != nil {
+		return mft.GenerateErrorE(20200080, err)
+	}
+
 	return nil
 }
 

@@ -69,8 +69,8 @@ func (p *Permission) DenyRaw(co *az.CheckedObject) bool {
 type User struct {
 	Name       string                                                  `json:"name"`
 	IsAdmin    bool                                                    `json:"is_admin,omitempty"`
-	IsDisabled bool                                                    `json:"is_disabled"`
-	Rules      map[ajt.ObjectType]map[ajt.Action]map[string]Permission `json:"rule"`
+	IsDisabled bool                                                    `json:"is_disabled,omitempty"`
+	Rules      map[ajt.ObjectType]map[ajt.Action]map[string]Permission `json:"rule,omitempty"`
 }
 
 func (u *User) Allow(objectType ajt.ObjectType, action ajt.Action, objectName string) bool {

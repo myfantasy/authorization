@@ -231,7 +231,7 @@ type SimplePermissionChecker struct {
 }
 
 func (spc *SimplePermissionChecker) ToBytes() (data []byte, err *mft.Error) {
-	b, er0 := json.Marshal(spc)
+	b, er0 := json.MarshalIndent(spc, "", "  ")
 	if er0 != nil {
 		return nil, mft.GenerateErrorE(20200050, er0)
 	}
